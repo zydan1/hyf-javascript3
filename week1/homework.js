@@ -1,22 +1,3 @@
-class draw {
-  constructor(father, child, value, Style) {
-    this.father = father;
-    this.child = child;
-    this.value = value;
-    this.Style = [];
-  }
-  CreateEl(child, value, father, Style) {
-    child = document.createElement(this.child);
-    child.innerHTML = this.value;
-    father = this.father.appendChild(child);
-    /*
-    for(let i = 0 ; i < this.Style.length ; i++ ){
-     child.style.Style[i] = Style[i+1] 
-    Style[i] = Style[i+2];
-    }
-    */
-  }
-}
 class Movie {
   constructor(title, director) {
     // add your code here
@@ -101,18 +82,17 @@ myMovie.addStar(secondActor);
 myMovie.addStar(thActor);
 myMovie.addStar(firstActor);
 
-;
 console.log(myMovie.getStars().map(actor => `${actor.getName()} ${actor.getAge()}`));
-
+function createEl(father, child, value,id, Style) {
+  child = document.createElement(child);
+  child.innerHTML = value;
+  child.setAttribute("style",Style);
+  child.setAttribute("id",id)
+  father = father.appendChild(child);
+}
 let Fath = document.getElementById('Movie');
-let title = new draw(Fath, 'h1', `Title : ${myMovie.getTitle()}`)
-let writer = new draw(Fath, 'p', `Writers : ${myMovie.getWriters()}`)
-let star = new draw(Fath, 'p', myMovie.getStars().map(actor => ` Actor Name : ${actor.getName()} Age :( ${actor.getAge()})`))
-let dir = new draw(Fath, 'h2', ` Director : ${myMovie.getDirector()}`)
-let average = new draw(Fath, 'p', `Rate : ${myMovie.getAverageRating()}`)
-
-title.CreateEl();
-writer.CreateEl();
-star.CreateEl();
-dir.CreateEl();
-average.CreateEl();
+createEl(Fath, 'h1', `Title : ${myMovie.getTitle()}`,"title","color: rgb(123,45,64);");
+createEl(Fath, 'p', `Writers : ${myMovie.getWriters()}`,"writer","font-size: 30px;color: red")
+createEl(Fath, 'p', myMovie.getStars().map(actor => ` Actor Name : ${actor.getName()} Age :( ${actor.getAge()})`),"actors","font-size:30px;color:rgb(211, 31, 157);")
+createEl(Fath, 'p', `Rate : ${myMovie.getAverageRating()}`,'rate','color:green;font-size:30px;')
+createEl(Fath, 'h2', ` Director : ${myMovie.getDirector()}`,'dir',"font-size: 30px;color:aqu;font-size: 30px;color: rgb(211, 31, 157);")
