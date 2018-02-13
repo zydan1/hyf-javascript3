@@ -22,7 +22,7 @@ button.addEventListener('click', () => getData(input.value));
 let root = document.getElementById('root');
 root.setAttribute('style', 'display:inline-flex');
 
-function fetchJSON(url, callBack) {
+function makeRequest(url, callBack) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.responseType = 'json';
@@ -40,7 +40,7 @@ function workOnData(Data) {
         createAndAppend('li', ul, ` ${key} :  ${Data[key]}`);
         if (key === 'contributors_url') {
             console.log(Data[key]);
-            fetchJSON(Data[key], (data) => {
+            makeRequest(Data[key], (data) => {
                 if (data === Error) {
                     console.log(Error)
                 }
@@ -63,7 +63,7 @@ function workOnData(Data) {
 }
 function getData(value) {
 
-    fetchJSON(link + value, (data) => {
+    makeRequest(link + value, (data) => {
         if (data === Error) {
             console.log(Error)
         } else {
