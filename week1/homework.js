@@ -83,16 +83,16 @@ myMovie.addStar(thActor);
 myMovie.addStar(firstActor);
 
 console.log(myMovie.getStars().map(actor => `${actor.getName()} ${actor.getAge()}`));
-function createEl(father, child, value,id, Style) {
+function createEl(father, child, value, id, Style) {
   child = document.createElement(child);
   child.innerHTML = value;
-  child.setAttribute("style",Style);
-  child.setAttribute("id",id)
+  child.setAttribute("style", Style);
+  child.setAttribute("id", id)
   father = father.appendChild(child);
 }
 let Fath = document.getElementById('Movie');
-createEl(Fath, 'h1', `Title : ${myMovie.getTitle()}`,"title","color: rgb(123,45,64);");
-createEl(Fath, 'p', `Writers : ${myMovie.getWriters()}`,"writer","font-size: 30px;color: red")
-createEl(Fath, 'p', myMovie.getStars().map(actor => ` Actor Name : ${actor.getName()} Age :( ${actor.getAge()})`),"actors","font-size:30px;color:rgb(211, 31, 157);")
-createEl(Fath, 'p', `Rate : ${myMovie.getAverageRating()}`,'rate','color:green;font-size:30px;')
-createEl(Fath, 'h2', ` Director : ${myMovie.getDirector()}`,'dir',"font-size: 30px;color:aqu;font-size: 30px;color: rgb(211, 31, 157);")
+createEl(Fath, 'h1', `Title : ${myMovie.getTitle()}`, "title", "color: rgb(123,45,64);");
+createEl(Fath, 'p', `Writers : ${myMovie.getWriters()}`, "writer", "font-size: 30px;color: red")
+createEl(Fath, 'p', myMovie.getStars().map(actor => ` Actor Name : ${actor.getName()} Age :( ${actor.getAge()})`), "actors", "font-size:30px;color:rgb(211, 31, 157);")
+createEl(Fath, 'p', `Rate : ${myMovie.getAverageRating()}`, 'rate', 'color:green;font-size:30px;')
+createEl(Fath, 'h2', ` Director : ${myMovie.getDirector()}`, 'dir', "font-size: 30px;color:aqu;font-size: 30px;color: rgb(211, 31, 157);")
