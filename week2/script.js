@@ -8,6 +8,7 @@ function createAndAppend(name, parent, innerHTML) {
     }
     return child;
 }
+
 const div = createAndAppend('div', this.root);
 const input = createAndAppend('input', div);
 input.setAttribute('type', 'text');
@@ -19,24 +20,54 @@ button.setAttribute('style', 'width:70px;height:32px;color:white;background-colo
 button.addEventListener('click', () => getData(input.value));
 
 let root = document.getElementById('root');
-function fetchJSON(url) {
+root.setAttribute('style', 'display:inline-flex');
+
+function fetchJSON(url, callBack) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.responseType = 'json';
     xhr.send();
-    xhr.onload = () => data(xhr.response);
-    xhr.onerror = () => data(new Error(xhr.statusText));
+    xhr.onload = () => callBack(xhr.response);
+    xhr.onerror = () => callBack(new Error(xhr.statusText));
 }
-function data(Data) {
-    let ul = createAndAppend('li', root)
-    if (Data !== Error) {
-        for (let key in Data) {
-            createAndAppend('li', ul, `:${Data[key]}`);
+
+function workOnData(Data) {
+    let resultDiv = createAndAppend('div', root);
+    let ul = createAndAppend('li', resultDiv);
+    let newDiv = createAndAppend('div', root);
+    newDiv.setAttribute('style', 'width:50%;')
+    for (let key in Data) {
+        createAndAppend('li', ul, ` ${key} :  ${Data[key]}`);
+        if (key === 'contributors_url') {
+            console.log(Data[key]);
+            fetchJSON(Data[key], (data) => {
+                if (data === Error) {
+                    console.log(Error)
+                }
+                else {
+                    createAndAppend('h1', newDiv, 'contributors')
+                    for (let dataKey in data) {
+                        let returnObjects = data[dataKey];
+                        // console.log(returnObjects);
+                        for (let Keys in returnObjects) {
+                            createAndAppend('li', newDiv, ` ${Keys}  : ${returnObjects[Keys]}`)
+                        }
+
+                    }
+
+                }
+
+            })
         }
-    } else (
-        console.log(Error)
-    )
+    }
 }
 function getData(value) {
-    fetchJSON(link + value);
+
+    fetchJSON(link + value, (data) => {
+        if (data === Error) {
+            console.log(Error)
+        } else {
+            workOnData(data);
+        }
+    });
 }
