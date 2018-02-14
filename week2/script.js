@@ -49,7 +49,7 @@ function workOnData(Data) {
                     createAndAppend('h1', newDiv, 'contributors')
                     for (let dataKey in data) {
                         let returnObjects = data[dataKey];
-                        // console.log(returnObjects);
+                        
                         for (let Keys in returnObjects) {
                             createAndAppend('h2', newDiv, ` ${Keys}: `);
                             createAndAppend('h3', newDiv, `${returnObjects[Keys]}`);
@@ -67,7 +67,7 @@ function workOnData(Data) {
 
             });
         } else if (key === "html_url") {
-            // let Div2 = createAndAppend('div',resultDiv);
+            
             let Link = createAndAppend('a', ul, `${key}`);
             Link.href = Data[key];
         } else {
