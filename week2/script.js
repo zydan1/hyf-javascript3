@@ -33,16 +33,17 @@ function makeRequest(url, callBack) {
 
 function workOnData(Data) {
     let resultDiv = createAndAppend('div', root);
-    let ul = createAndAppend('li', resultDiv);
+    let ul = createAndAppend('ul', resultDiv);
     let newDiv = createAndAppend('div', root);
+
     newDiv.setAttribute('style', 'width:50%;')
     for (let key in Data) {
-        createAndAppend('li', ul, ` ${key} :  ${Data[key]}`);
+
         if (key === 'contributors_url') {
-            console.log(Data[key]);
+
             makeRequest(Data[key], (data) => {
                 if (data === Error) {
-                    console.log(Error)
+                    alert(Error);
                 }
                 else {
                     createAndAppend('h1', newDiv, 'contributors')
@@ -50,14 +51,29 @@ function workOnData(Data) {
                         let returnObjects = data[dataKey];
                         // console.log(returnObjects);
                         for (let Keys in returnObjects) {
-                            createAndAppend('li', newDiv, ` ${Keys}  : ${returnObjects[Keys]}`)
+                            createAndAppend('h2', newDiv, ` ${Keys}: `);
+                            createAndAppend('h3', newDiv, `${returnObjects[Keys]}`);
+                            if (Keys === "avatar_url") {
+                                let img = document.createElement('img');
+                                img.src = returnObjects[Keys];
+                                newDiv.appendChild(img)
+                            }
+
                         }
 
                     }
 
                 }
 
-            })
+            });
+        } else if (key === "html_url") {
+            // let Div2 = createAndAppend('div',resultDiv);
+            let Link = createAndAppend('a', ul, `${key}`);
+            Link.href = Data[key];
+        } else {
+            createAndAppend('h2', resultDiv, ` ${key}: `);
+            createAndAppend('h3', resultDiv, ` ${Data[key]}`);
+
         }
     }
 }
@@ -65,7 +81,7 @@ function getData(value) {
 
     makeRequest(link + value, (data) => {
         if (data === Error) {
-            console.log(Error)
+            alert(Error)
         } else {
             workOnData(data);
         }
