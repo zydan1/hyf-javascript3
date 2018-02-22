@@ -43,7 +43,6 @@ function workOnData(Data) {
 
         if (key === 'contributors_url') {
 
-<<<<<<< HEAD
             makeRequest(Data[key]).then(data => {
                 createAndAppend('h1', newDiv, 'contributors')
                 for (let dataKey in data) {
@@ -56,18 +55,6 @@ function workOnData(Data) {
                             img.src = returnObjects[Keys];
                             newDiv.appendChild(img);
                         } else if (Keys === "login" || Keys === "id" || Keys === "html_url" || Keys === "followers_url" || Keys === "repos_url" || Keys === "type" || Keys === "contributions") {
-=======
-            makeRequest(Data[key], (data) => {
-                if (data === Error) {
-                    alert(Error);
-                }
-                else {
-                    createAndAppend('h1', newDiv, 'contributors')
-                    for (let dataKey in data) {
-                        let returnObjects = data[dataKey];
-                        
-                        for (let Keys in returnObjects) {
->>>>>>> 6c91522760a97209e807445ca3686c5cbd34a5b3
                             createAndAppend('h2', newDiv, ` ${Keys}: `);
                             createAndAppend('h3', newDiv, `${returnObjects[Keys]}`);
                             createAndAppend('hr', newDiv)
@@ -84,10 +71,6 @@ function workOnData(Data) {
 
 
         } else if (key === "html_url") {
-<<<<<<< HEAD
-=======
-            
->>>>>>> 6c91522760a97209e807445ca3686c5cbd34a5b3
             let Link = createAndAppend('a', ul, `${key}`);
             Link.href = Data[key]
         }
@@ -101,17 +84,7 @@ function workOnData(Data) {
 }
 function getData(value) {
 
-<<<<<<< HEAD
     makeRequest(link + value).then(data => {
         workOnData(data)
     }).catch(err => console.log(err))
-=======
-    makeRequest(link + value, (data) => {
-        if (data === Error) {
-            alert(Error)
-        } else {
-            workOnData(data);
-        }
-    });
->>>>>>> 6c91522760a97209e807445ca3686c5cbd34a5b3
 }
