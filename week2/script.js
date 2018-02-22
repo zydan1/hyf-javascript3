@@ -22,13 +22,15 @@ button.addEventListener('click', () => getData(input.value));
 let root = document.getElementById('root');
 root.setAttribute('style', 'display:inline-flex');
 
-function makeRequest(url, callBack) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.responseType = 'json';
-    xhr.send();
-    xhr.onload = () => callBack(xhr.response);
-    xhr.onerror = () => callBack(new Error(xhr.statusText));
+function makeRequest(url) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.responseType = 'json';
+        xhr.send();
+        xhr.onload = () => resolve(xhr.response);
+        xhr.onerror = () => reject(new Error(xhr.statusText));
+    })
 }
 
 function workOnData(Data) {
@@ -41,23 +43,21 @@ function workOnData(Data) {
 
         if (key === 'contributors_url') {
 
-            makeRequest(Data[key], (data) => {
-                if (data === Error) {
-                    alert(Error);
-                }
-                else {
-                    createAndAppend('h1', newDiv, 'contributors')
-                    for (let dataKey in data) {
-                        let returnObjects = data[dataKey];
-                        // console.log(returnObjects);
-                        for (let Keys in returnObjects) {
+            makeRequest(Data[key]).then(data => {
+                createAndAppend('h1', newDiv, 'contributors')
+                for (let dataKey in data) {
+                    let returnObjects = data[dataKey];
+
+                    for (let Keys in returnObjects) {
+
+                        if (Keys === "avatar_url") {
+                            let img = document.createElement('img');
+                            img.src = returnObjects[Keys];
+                            newDiv.appendChild(img);
+                        } else if (Keys === "login" || Keys === "id" || Keys === "html_url" || Keys === "followers_url" || Keys === "repos_url" || Keys === "type" || Keys === "contributions") {
                             createAndAppend('h2', newDiv, ` ${Keys}: `);
                             createAndAppend('h3', newDiv, `${returnObjects[Keys]}`);
-                            if (Keys === "avatar_url") {
-                                let img = document.createElement('img');
-                                img.src = returnObjects[Keys];
-                                newDiv.appendChild(img)
-                            }
+                            createAndAppend('hr', newDiv)
 
                         }
 
@@ -65,25 +65,26 @@ function workOnData(Data) {
 
                 }
 
-            });
+
+            }).catch(err => alert(err))
+
+
+
         } else if (key === "html_url") {
-            // let Div2 = createAndAppend('div',resultDiv);
             let Link = createAndAppend('a', ul, `${key}`);
-            Link.href = Data[key];
-        } else {
+            Link.href = Data[key]
+        }
+        else if (key === "id" || key === "name" || key === "full_name" || key === "private" || key === "description" || key === "downloads_url" || key === "subscribers_count") {
             createAndAppend('h2', resultDiv, ` ${key}: `);
             createAndAppend('h3', resultDiv, ` ${Data[key]}`);
+            createAndAppend('hr', resultDiv);
 
         }
     }
 }
 function getData(value) {
 
-    makeRequest(link + value, (data) => {
-        if (data === Error) {
-            alert(Error)
-        } else {
-            workOnData(data);
-        }
-    });
+    makeRequest(link + value).then(data => {
+        workOnData(data)
+    }).catch(err => console.log(err))
 }
